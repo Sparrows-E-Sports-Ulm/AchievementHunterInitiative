@@ -6,7 +6,6 @@ from user import Hunter
 from scoreboard_calculator import calculate_scoreboard
 from scoreboard_calculator import calculate_scoreboard_around_hunter
 import threading
-from concurrent.futures import ThreadPoolExecutor
 import pickle
 from table2ascii import table2ascii as t2a, PresetStyle
 
@@ -112,7 +111,7 @@ async def scoreboard(interaction):
 )
 async def scoreboard_hunter(interaction, steam_id : str):
     output = t2a(
-        header=["Rank","Hunter", "Team"],
+        header=["Rank","Hunter", "Score"],
         body=calculate_scoreboard_around_hunter(registered_hunters, steam_id),
         style=PresetStyle.thin_compact
 )
