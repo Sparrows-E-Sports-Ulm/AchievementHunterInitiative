@@ -14,7 +14,6 @@ class UserRegistration:
     def __init__(self):
         load_dotenv()
         self.KEY = os.getenv("SteamKey")
-        print(self.KEY)
         self.steam = SteamAPI.Steam(self.KEY)
         self.client = SteamAPI.Client(self.KEY)
         self.apps = SteamAPI.Apps(self.client)
@@ -30,8 +29,6 @@ class UserRegistration:
                     result.append(ach["apiname"])
             return result
         except Exception as e:
-            print(achievements)
-            print("Couldnt get achieved achievements")
             e.with_traceback(None)
 
     def request_user_achievements(self, user_id : str):
@@ -45,12 +42,8 @@ class UserRegistration:
             achievements = None
             try:    
                 achievements = self.apps.get_user_achievements(user["player"]["steamid"], game["appid"])
-                name = game["name"]
-                print(f"Successful for {name}")
-                
             except:
-                name = game["name"]
-                print(f"Failed for {name}")
+                pass
             if(achievements is None): continue
             unlocked_achievements = self._get_achievements_of_game(achievements)
             user_achievements_per_game_dict[game["appid"]] = unlocked_achievements

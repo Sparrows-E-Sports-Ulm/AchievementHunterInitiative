@@ -8,6 +8,8 @@ from scoreboard_calculator import calculate_scoreboard_around_hunter
 import threading
 import pickle
 from table2ascii import table2ascii as t2a, PresetStyle
+from command_scheduler import scheduler
+from command_type import command_type as ct
 
 load_dotenv()
 intents = discord.Intents.default()
@@ -19,24 +21,10 @@ SERVERID = int(os.getenv("SERVER_ID"))
 
 
 
-registered_hunters = dict() # SteamID : Hunter
-being_registeres = []
 error_counter = 0
-
-
-
 directory = os.fsencode("Hunters")
-    
-for file in os.listdir(directory):
-    filename = os.fsdecode(file)
-    print(filename)
-    if(filename.endswith(".hunt")):
-        try:
-            with open("Hunters/" + filename, "rb") as f:
-                hunter : Hunter = pickle.load(f)
-                registered_hunters[hunter.name] = hunter
-        except Exception as e:
-            print("Couldn't load Hunter")
+cmd_sched = scheduler()
+thread = threading.Thread(target=cmd_sched.run)
 
 
 @tree.command(
@@ -46,30 +34,19 @@ for file in os.listdir(directory):
 )
 async def register(interaction, steam_id : str):
     message : str
-    print(being_registeres)
     try:
-        if(steam_id in registered_hunters.keys()):
+        if(steam_id+".hunt" in os.listdir("Hunters")):
             message="SteamID already Registered. Use /score to see the recorded score."
-        elif(steam_id in being_registeres):
-            message="Hunter is currently being registered. Please be patient."
-        else:
-            thread = threading.Thread(target=register_user, args=(steam_id,))
-            thread.start()
-            message="Achievement Hunter is being registered. This may take a while."
+            return
+        cmd_sched.queue_command(ct.REGISTER, steam_id)
+        message="Achievement Hunter is being registered. This may take a while."
+
     except Exception as e:
         message="Registration failed. Please Verify the SteamID is written correctly. Alternatively, send us a ticket using /error."
         e.with_traceback()
 
     await interaction.response.send_message(message)
 
-def register_user(steam_id, ):
-    being_registeres.append(steam_id)
-    print("Registering User")
-    hunter = Hunter(steam_id)
-    file = open("Hunters/" + hunter.name + ".hunt", "wb")
-    pickle.dump(hunter, file)
-    registered_hunters[steam_id] = hunter
-    being_registeres.remove(steam_id)
 
 @tree.command(
         name="update",
@@ -78,19 +55,19 @@ def register_user(steam_id, ):
 )
 async def update(interaction, steam_id : str):
     try:
-        if(steam_id not in registered_hunters.keys()):
+        if(steam_id+".hunt" not in os.listdir("Hunters")):
             message = "User not Registered. Use /register to register a new Achievement Hunter"
-        elif(steam_id in being_registeres):
-            message="Hunter is currently being updated. Please be patient."
-        else:
-            thread = threading.Thread(target=register_user, args=(steam_id,))
-            thread.start()
-            message="Achievement Hunter is being updated. This may take a while."
+            return 
+        cmd_sched.queue_command(ct.UPDATE, steam_id)
+        message="Achievement Hunter is being updated. This may take a while."
+
     except Exception as e:
         message="Registration failed. Please Verify the SteamID is written correctly. Alternatively, send us a ticket using /error."
         e.with_traceback()
 
     await interaction.response.send_message(message)
+
+
 @tree.command(
     name="scoreboard",
     description="Shows the Scoreboard",
@@ -98,11 +75,12 @@ async def update(interaction, steam_id : str):
 )
 async def scoreboard(interaction):
     output = t2a(
-        header=["Rank","Hunter", "Team"],
-        body=calculate_scoreboard(registered_hunters),
+        header=["Rank","Hunter", "Score"],
+        body=calculate_scoreboard(),
         style=PresetStyle.thin_compact
 )
     await interaction.response.send_message(f"```\n{output}\n```")
+
 
 @tree.command(
     name="scoreboard_hunter",
@@ -112,10 +90,11 @@ async def scoreboard(interaction):
 async def scoreboard_hunter(interaction, steam_id : str):
     output = t2a(
         header=["Rank","Hunter", "Score"],
-        body=calculate_scoreboard_around_hunter(registered_hunters, steam_id),
+        body=calculate_scoreboard_around_hunter(steam_id),
         style=PresetStyle.thin_compact
 )
     await interaction.response.send_message(f"```\n{output}\n```")
+
 @tree.command(
     name = "score",
     description="Shows the score of a given SteamID",
@@ -123,16 +102,13 @@ async def scoreboard_hunter(interaction, steam_id : str):
 )
 async def score(interaction, steam_id : str):
     message : str
-    print(registered_hunters.keys())
-    if(not steam_id in registered_hunters.keys()):
+    if(steam_id+".hunt" not in os.listdir("Hunters")):
         message = "User not Registered. Use /register to register a new Achievement Hunter"
-    else:
-        try:
-            hunter : Hunter = registered_hunters[steam_id]
-            message = str(hunter.score)
-        except Exception as e:
-            message="Request failed. Please Verify the SteamID is written correctly. Alternatively, send us a ticket using /error."
-            e.with_traceback()
+        return
+    
+    hunter : Hunter = pickle.load(steam_id+".hunt")
+    message = str(hunter.score)
+
     await interaction.response.send_message(message)
 
 @tree.command(
