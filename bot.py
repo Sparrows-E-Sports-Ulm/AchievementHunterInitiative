@@ -106,13 +106,15 @@ async def scoreboard_hunter(interaction, steam_id : str):
     guild = discord.Object(id=SERVERID)
 )
 async def score(interaction, steam_id : str):
+    print("Scoring")
     message : str
     if(steam_id.lower()+".hunt" not in os.listdir("Hunters")):
+        print("Hunter not Registered")
         message = "User not Registered. Use /register to register a new Achievement Hunter"
-        return
-    with open("Hunters/"+steam_id.lower()+".hunt", "r") as file:
-        hunter : Hunter = pickle.load(file)
-        message = str(hunter.score)
+    else:
+        with open("Hunters/"+steam_id.lower()+".hunt", "rb") as file:
+            hunter : Hunter = pickle.load(file)
+            message = str(hunter.score)
     await interaction.response.send_message(message)
 
 @tree.command(
