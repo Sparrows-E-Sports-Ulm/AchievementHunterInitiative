@@ -25,7 +25,17 @@ error_counter = 0
 directory = os.fsencode("Hunters")
 cmd_sched = scheduler()
 thread = threading.Thread(target=cmd_sched.run)
+thread.start()
+print("Starting Bot")
 
+@tree.command(
+    name="test",
+    description="Test Command for functionallity",
+    guild = discord.Object(id=SERVERID)
+)
+async def test(interaction):
+    message = "Successful"
+    await interaction.response.send_message(message)
 
 @tree.command(
     name="register",
@@ -37,9 +47,9 @@ async def register(interaction, steam_id : str):
     try:
         if(steam_id+".hunt" in os.listdir("Hunters")):
             message="SteamID already Registered. Use /score to see the recorded score."
-            return
-        cmd_sched.queue_command(ct.REGISTER, steam_id)
-        message="Achievement Hunter is being registered. This may take a while."
+        else:
+            cmd_sched.queue_command(command(ct.REGISTER, steam_id))
+            message="Achievement Hunter is being registered. This may take a while."
 
     except Exception as e:
         message="Registration failed. Please Verify the SteamID is written correctly. Alternatively, send us a ticket using /error."
@@ -57,15 +67,18 @@ async def update(interaction, steam_id : str):
     try:
         if(steam_id+".hunt" not in os.listdir("Hunters")):
             message = "User not Registered. Use /register to register a new Achievement Hunter"
-            return 
-        cmd_sched.queue_command(ct.UPDATE, steam_id)
-        message="Achievement Hunter is being updated. This may take a while."
+        else:
+            print("Scheduling Update")
+            cmd_sched.queue_command(command(ct.UPDATE, steam_id))
+            message="Achievement Hunter is being updated. This may take a while."
 
     except Exception as e:
         message="Registration failed. Please Verify the SteamID is written correctly. Alternatively, send us a ticket using /error."
         e.with_traceback()
 
     await interaction.response.send_message(message)
+
+
 
 
 @tree.command(
@@ -136,4 +149,3 @@ async def on_ready():
 #        await message.channel.send('Hello!')
 
 client.run(TOKEN)
-

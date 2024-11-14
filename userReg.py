@@ -1,4 +1,3 @@
-from setup import setup_env
 import os
 import steam_web_api as SteamAPI
 from dotenv import load_dotenv
@@ -38,6 +37,8 @@ class UserRegistration:
             return
         games = self.users.get_owned_games(steam_id=user["player"]["steamid"])
         user_achievements_per_game_dict : dict = dict()
+        if("games" not in games.keys()):
+            return user_achievements_per_game_dict
         for game in games["games"]:
             achievements = None
             try:    
@@ -53,4 +54,8 @@ class UserRegistration:
 
 #GetGlobalAchievementPercentagesForApp("Hollow Knight")
 #print(achievements)
+
+
+
+
 

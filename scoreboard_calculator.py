@@ -28,15 +28,16 @@ def calculate_scoreboard_around_hunter(steam_id):
     for i in range(middle_index - 4, middle_index +4):
         if(i not in range(len(sorted_hunters))): continue
         hunter = sorted_hunters[i]
-        body.insert(i, [str(i+1), str(hunter.name), str(hunter.score)])
+        body.insert(i, [str(i+1), str(hunter.name), str(int(hunter.score))])
 
     return body
 
 def _get_reg_hunter():
-    registered_hunter = dir()
+    registered_hunter = {}
     for file in os.listdir("Hunters"):
         filename = os.fsdecode(file)
         if(filename.endswith(".hunt")):
             with open("Hunters/" + filename, "rb") as f:
                 hunter : Hunter = pickle.load(f)
                 registered_hunter[hunter.name] = hunter
+    return registered_hunter
