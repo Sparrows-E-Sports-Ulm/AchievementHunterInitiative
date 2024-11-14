@@ -29,7 +29,7 @@ thread = threading.Thread(target=cmd_sched.run)
 thread.start()
 print("Starting Bot")
 
-steam_id = "yukiteror"
+steam_id = "Niievex"
 
 #cmd_sched.queue_command(command(ct.REGISTER, steam_id))
 with open("Hunters/" + steam_id+".hunt", "rb") as file:
@@ -43,3 +43,10 @@ output = t2a(
     style=PresetStyle.thin_compact
 )
 print(output)
+
+if(steam_id.lower()+".hunt" not in os.listdir("Hunters")):
+        message = "User not Registered. Use /register to register a new Achievement Hunter"
+with open("Hunters/"+steam_id+".hunt", "rb") as file:
+    hunter : Hunter = pickle.load(file)
+    message = str(hunter.score)
+print(message)

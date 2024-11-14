@@ -39,13 +39,13 @@ class scheduler:
 
 def _register_user(entity):
     hunter = Hunter(entity)
-    file = open("Hunters/" + entity + ".hunt", "wb")
+    file = open("Hunters/" + entity.lower() + ".hunt", "wb")
     pickle.dump(hunter, file)
 
 
 ### TODO Write more efficient update method
 def _update_user(entity): 
     hunter = Hunter(entity)
-    file = open("Hunters/" + entity + ".hunt", "wb")
+    file = open("Hunters/" + entity.lower() + ".hunt", "wb")
     pickle.dump(hunter, file)
 

@@ -10,6 +10,7 @@ import pickle
 from table2ascii import table2ascii as t2a, PresetStyle
 from command_scheduler import scheduler
 from command_type import command_type as ct
+from command import command
 
 load_dotenv()
 intents = discord.Intents.default()
@@ -29,15 +30,6 @@ thread.start()
 print("Starting Bot")
 
 @tree.command(
-    name="test",
-    description="Test Command for functionallity",
-    guild = discord.Object(id=SERVERID)
-)
-async def test(interaction):
-    message = "Successful"
-    await interaction.response.send_message(message)
-
-@tree.command(
     name="register",
     description="Registers a new Achievement Hunter. It may take a few minutes.",
     guild = discord.Object(id=SERVERID)
@@ -45,7 +37,7 @@ async def test(interaction):
 async def register(interaction, steam_id : str):
     message : str
     try:
-        if(steam_id+".hunt" in os.listdir("Hunters")):
+        if(steam_id.lower()+".hunt" in os.listdir("Hunters")):
             message="SteamID already Registered. Use /score to see the recorded score."
         else:
             cmd_sched.queue_command(command(ct.REGISTER, steam_id))
@@ -115,13 +107,12 @@ async def scoreboard_hunter(interaction, steam_id : str):
 )
 async def score(interaction, steam_id : str):
     message : str
-    if(steam_id+".hunt" not in os.listdir("Hunters")):
+    if(steam_id.lower()+".hunt" not in os.listdir("Hunters")):
         message = "User not Registered. Use /register to register a new Achievement Hunter"
         return
-    
-    hunter : Hunter = pickle.load(steam_id+".hunt")
-    message = str(hunter.score)
-
+    with open("Hunters/"+steam_id.lower()+".hunt", "r") as file:
+        hunter : Hunter = pickle.load(file)
+        message = str(hunter.score)
     await interaction.response.send_message(message)
 
 @tree.command(
