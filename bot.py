@@ -57,7 +57,7 @@ async def register(interaction, steam_id : str):
 )
 async def update(interaction, steam_id : str):
     try:
-        if(steam_id+".hunt" not in os.listdir("Hunters")):
+        if(steam_id.lower()+".hunt" not in os.listdir("Hunters")):
             message = "User not Registered. Use /register to register a new Achievement Hunter"
         else:
             print("Scheduling Update")
