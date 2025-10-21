@@ -1,0 +1,6 @@
+[submodule "ACHHI_API"]
+	path = ACHHI_API
+	url = https://github.com/Sparrows-E-Sports-Ulm/ACHHI_API.git
+[submodule "ACHHI_Bot"]
+	path = ACHHI_Bot
+	url = https://github.com/Sparrows-E-Sports-Ulm/ACHHI_Bot
