@@ -1,0 +1,215 @@
+{
+  "meta": {
+    "language": "English",
+    "locale": "en",
+    "version": "1.0.0"
+  },
+  "commands": {
+    "register": {
+      "success_header": "🎉 Registration Successful!",
+      "success_queued": "The User with the Steam ID `{steam_id}` has been successfully registered as a hunter!\nYour score calculation has been queued. Position in queue: {position}\nThis may take a while depending on the number of games in your library and other pending calculations.\nTo check your position in the queue, use /queue.",
+      "already_registered": "You are already registered as a hunter. Use /update to update your score.",
+      "fetch_failed": "Failed to fetch your Steam profile. Please try again later.",
+      "profile_not_public": "Cannot register: Your Steam profile is {visibility}!\n\nTo register as an Achievement Hunter, you need to:\n1. Go to your Steam Profile Settings (Edit Profile → Privacy Settings)\n2. Set **My Profile** to **Public**\n3. Set **Game Details** to **Public**\n4. Set **Friends List** to **Public** (recommended)\n\nAfter changing your privacy settings to Public, please try registering again.",
+      "game_details_private": "Cannot register: Your game details are private!\n\nYour profile is public, but your game details are not accessible.\n\nTo register as an Achievement Hunter, you need to:\n1. Go to your Steam Profile Settings (Edit Profile → Privacy Settings)\n2. Set **Game Details** to **Public** (not Friends Only or Private)\n\nAfter changing your settings, please try registering again.",
+      "calculator_unavailable": "You have been successfully registered as a hunter!\nHowever, the score calculator is currently unavailable. Please try updating your score later."
+    },
+    "update": {
+      "name": "update",
+      "description": "Update your hunter score manually.",
+      "not_registered": "The Steam ID `{steam_id}` is not registered as a hunter.\nUse `/register steam_id:{steam_id}` to register.",
+      "cooldown_message": "You can update your score again {cooldown}.",
+      "private_profile": "Cannot update your score: Your Steam profile is private!\n\nPlease make your Steam profile public to use this feature:\n1. Go to your Steam Profile Settings (Edit Profile → Privacy Settings)\n2. Set **My Profile** to **Public**\n3. Set **Game Details** to **Public**\n\nAfter changing your privacy settings, please try again.",
+      "fetch_failed": "Failed to fetch your Steam profile. Please try again later.",
+      "allready_queued": "Your score calculation is already in the queue at position {position}. Please wait.",
+      "success_queued": "Your score calculation has been queued. Position in queue: {position}\nThis may take a while depending on the number of games in your library and other pending calculations.\nTo check your position in the queue, use /queue.",
+      "calculator_unavailable": "The score calculator is currently unavailable. Please try again later."
+    },
+    "verify_steam": {
+      "name": "verify_steam",
+      "description_cmd": "Verify your Steam account ownership via Discord connection",
+      "title_unavailable": "⚠️ OAuth2 Verification Not Available",
+      "description_unavailable": "Automatic Steam verification is not currently available.",
+      "why_field": "Why?",
+      "why_text": "The OAuth2 server requires a `DISCORD_CLIENT_SECRET` to be configured.\nThis feature is being set up by the bot administrator.",
+      "alternative_field": "Alternative: Manual Registration",
+      "alternative_text": "You can still register manually using:\n`/register <your_steam_id>`\n\nFind your Steam ID at: https://steamid.io/",
+      "title": "🔗 Steam Account Verification",
+      "description_embed": "Automatically verify your Steam account ownership!",
+      "requirements_field": "📋 Requirements",
+      "requirements_text": "✅ Steam account linked in Discord\n✅ Steam profile set to **Public**\n✅ Game details set to **Public**",
+      "step1_field": "1️⃣ Link Steam to Discord (if not already done)",
+      "step1_text": "• Go to **User Settings** → **Connections**\n• Click **Add** → Select **Steam**\n• Login and authorize\n• *(Optional)* Make it visible on your profile",
+      "step2_field": "2️⃣ Click the button below",
+      "step2_text": "This will:\n• Verify you own the Steam account\n• Automatically register you as an Achievement Hunter\n• Start calculating your score",
+      "privacy_field": "🔒 Privacy",
+      "privacy_text": "This bot will only access your Discord connections to verify Steam ownership.",
+      "button_label": "🎮 Verify & Register",
+      "footer": "Alternative: Use /register <steam_id> for manual registration"
+    },
+    "leaderboard": {
+      "name": "leaderboard",
+      "description": "Shows the Achievement Hunter Leaderboard",
+      "param_page": "Page number (default: 1)",
+      "param_category": "Category: score or achievements (default: score)",
+      "choice_score": "Score",
+      "choice_achievements": "Achievements",
+      "title": "🏆 Achievement Hunter Leaderboard - {category}",
+      "score_label": "Score",
+      "achievements_label": "Achievements",
+      "profile_button": "Profile",
+      "page_info": "Page: {current}/{total}",
+      "no_hunters": "No hunters have been registered yet.",
+      "button_previous": "◀ Previous",
+      "button_next": "Next ▶"
+    },
+    "rank": {
+      "name": "rank",
+      "description": "Shows your current rank and score.",
+      "not_registered": "You are not registered as a hunter yet. Use /register to register.",
+      "fetch_failed": "Failed to fetch your hunter data. Please try again later."
+    },
+    "hunter": {
+      "name": "hunter",
+      "description": "Shows detailed information about a hunter.",
+      "param_steam_id": "Steam ID of the hunter",
+      "not_found": "No hunter found with that Steam ID.",
+      "fetch_failed": "Failed to fetch hunter data. Please try again later."
+    },
+    "queue": {
+      "name": "queue",
+      "description": "Shows the current score calculation queue.",
+      "no_queue": "No score calculations are currently queued.",
+      "title": "📊 Score Calculation Queue",
+      "position_field": "Position #{position}",
+      "position_text": "**Hunter:** {steam_name}\n**Steam ID:** {steam_id}\n**Status:** {status}",
+      "footer": "Total hunters in queue: {count}",
+      "status_pending": "Pending",
+      "status_processing": "Processing"
+    },
+    "performance": {
+      "name": "performance",
+      "description": "Shows bot performance statistics.",
+      "not_registered": "You are not registered as a hunter yet. Use /register to register.",
+      "no_data": "No performance data available yet. Try updating your score first.",
+      "title": "📈 Bot Performance Statistics",
+      "hunter_field": "Hunter",
+      "last_update_field": "Last Update",
+      "calculation_time_field": "Calculation Time",
+      "api_calls_field": "API Calls",
+      "games_processed_field": "Games Processed"
+    },
+    "achievement_quiz": {
+      "name": "achievement_quiz",
+      "description": "Start an Achievement Quiz game.",
+      "param_rounds": "Number of rounds (default: 5)",
+      "param_difficulty": "Difficulty level",
+      "choice_easy": "Easy",
+      "choice_medium": "Medium",
+      "choice_hard": "Hard",
+      "thread_created": "Achievement Quiz thread created: {thread_mention}",
+      "thread_creation_failed": "Failed to create quiz thread. Please try again.",
+      "welcome_title": "🎮 Achievement Quiz",
+      "welcome_description": "Welcome to the Achievement Quiz!\n\nYou will be shown achievement icons and names.\nYour task is to guess which game they belong to!\n\n**Rounds:** {rounds}\n**Difficulty:** {difficulty}\n\nGet ready!",
+      "round_title": "Round {current}/{total}",
+      "guess_game": "Which game does this achievement belong to?",
+      "time_label": "Time",
+      "correct": "✅ Correct!",
+      "incorrect": "❌ Wrong!",
+      "timeout": "⏱️ Time's up!",
+      "correct_answer": "The correct answer was: **{game}**",
+      "results_title": "🏆 Quiz Results",
+      "final_score": "**Final Score:** {correct}/{total} correct",
+      "error_loading": "Error loading achievement. Skipping round.",
+      "error_terminated": "An error occurred. The game has been terminated."
+    },
+    "statistics": {
+      "name": "statistics",
+      "description": "View Steam API usage statistics and performance metrics",
+      "param_period": "Statistics period (today, week, month, all)",
+      "choice_today": "Today",
+      "choice_week": "This Week",
+      "choice_month": "This Month",
+      "choice_all": "All Time",
+      "no_data": "No API calls have been made yet in this period.",
+      "title_today": "📊 Steam API Statistics - Today",
+      "title_week": "📊 Steam API Statistics - This Week",
+      "title_month": "📊 Steam API Statistics - This Month",
+      "title_all": "📊 Steam API Statistics - All Time",
+      "current_usage": "**Current Usage:** {calls} / {limit} calls ({percentage}%)",
+      "remaining_today": "**Remaining Today:** {remaining} calls",
+      "last_hour": "**Last Hour:** {calls} calls",
+      "total_calls": "**Total Calls:** {calls}",
+      "successful": "**Successful:** {calls}",
+      "failed": "**Failed:** {calls}",
+      "success_rate": "**Success Rate:** {rate}%",
+      "avg_response": "**Avg Response:** {time}ms",
+      "avg_per_day": "**Avg/Day:** {calls} calls",
+      "rate_limits": "**Rate Limits:** {count}",
+      "private_profiles": "**Private Profiles:** {count}",
+      "session_total": "**Total:** {calls}",
+      "session_successful": "**Successful:** {calls}",
+      "session_failed": "**Failed:** {calls}",
+      "field_call_stats": "📞 Call Statistics",
+      "field_performance": "⚡ Performance",
+      "field_errors": "⚠️ Errors",
+      "field_session": "🔄 Current Session",
+      "footer": "Steam API Daily Limit: {limit} calls • Requested by {user}",
+      "fetch_failed": "❌ Failed to fetch API statistics. Please try again later."
+    }
+  },
+  "errors": {
+    "error_header": "## Something went wrong!",
+    "steam_id_not_found": "The provided Steam ID: `{steam_id}` does not exist.\nPlease provide a valid SteamID or vantity URL.",
+    "steam_id_resolution_failed": "Failed to resolve the provided Steam ID: `{steam_id}`.\nPlease provide a valid SteamID or vanity URL.",
+    "not_linked": "Your Discord account is not linked to a Steam account.\nPlease link your Steam account in Discord Connections and try again.",
+    "command_cooldown": "**Please slow down** - You can use this command again in {time}.",
+    "not_owner": "You are not the owner of the bot!",
+    "missing_permissions": "You are missing the permission(s) `{permissions}` to execute this command!",
+    "bot_missing_permissions": "I am missing the permission(s) `{permissions}` to fully perform this command!",
+    "missing_required_argument": "Error!\n{error}",
+    "generic": "An error occurred while processing your request."
+  },
+  "general": {
+    "profile_visibility": {
+      "private": "Private",
+      "friends_only": "Friends Only",
+      "public": "Public"
+    },
+    "time_format": {
+      "hours": "{hours} hours",
+      "minutes": "{minutes} minutes",
+      "seconds": "{seconds} seconds"
+    },
+    "loading": "Loading...",
+    "success": "Success!",
+    "error": "Error!"
+  },
+  "owner": {
+    "sync": {
+      "success": "Slash commands have been synchronized.",
+      "failed": "The tree could not be synced.",
+      "syncing": "Syncing slash commands..."
+    },
+    "unsync": {
+      "success": "Slash commands have been unsynced.",
+      "failed": "The tree could not be unsynced.",
+      "unsyncing": "Unsyncing slash commands..."
+    },
+    "load": {
+      "success": "Loaded the `{cog}` cog.",
+      "not_found": "Could not find the `{cog}` cog."
+    },
+    "unload": {
+      "success": "Unloaded the `{cog}` cog.",
+      "not_found": "Could not find the `{cog}` cog."
+    },
+    "reload": {
+      "success": "Reloaded the `{cog}` cog.",
+      "not_found": "Could not find the `{cog}` cog."
+    },
+    "shutdown": {
+      "message": "Shutting down. Bye! :wave:"
+    }
+  }
+}
